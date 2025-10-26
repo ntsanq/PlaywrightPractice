@@ -35,16 +35,14 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     screenshot: 'only-on-failure',
     headless: true,
-    testIdAttribute: 'data-test'
+    testIdAttribute: 'data-test',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'setup',
-      testMatch: [
-        /.*\.setup\.ts/,
-      ]
+      testMatch: [/.*\.setup\.ts/],
     },
     {
       name: 'chromium',

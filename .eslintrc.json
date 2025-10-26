@@ -1,0 +1,10 @@
+{
+  "parserOptions": {
+    "ecmaVersion": "latest", // this is important when I tried to config the Eslint with IDE
+    "sourceType": "module"
+  },
+  "rules": {
+    "quotes": ["error", "single", { "avoidEscape": true }]
+  },
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"]
+}
