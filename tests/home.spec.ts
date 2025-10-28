@@ -1,10 +1,12 @@
 import { expect, test } from '@playwright/test';
+import { HomePage } from '../src/pages';
 
 test.use({ headless: false });
 
 test.describe('Homepage with no authentication', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    const homePage = new HomePage(page);
+    await homePage.goto();
   });
 
   test('check grid with 9 items with no authentication', async ({ page }) => {

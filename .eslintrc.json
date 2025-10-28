@@ -1,12 +1,15 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest", // this is important when I tried to config the Eslint with IDE
-    "sourceType": "module",
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": "."
+    "ecmaVersion": "latest",
+    // this is important when I tried to config the Eslint with IDE
+    "sourceType": "module"
   },
-  "ignorePatterns": ["node_modules", "dist", "*.js"],
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "*.js"
+  ],
   "rules": {
     "quotes": [
       "error",
@@ -15,7 +18,9 @@
         "avoidEscape": true
       }
     ],
-    "@typescript-eslint/no-unused-vars": ["warn"],
+    "@typescript-eslint/no-unused-vars": [
+      "warn"
+    ],
     "@typescript-eslint/explicit-function-return-type": "off"
   },
   "plugins": [
@@ -24,5 +29,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:prettier/recommended"
-  ]
+  ],
+  "env": {
+    "node": true
+  }
 }

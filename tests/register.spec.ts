@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { RegisterPage } from '../src/pages';
 
 test.use({ headless: false });
 
@@ -17,31 +18,9 @@ const inputData = {
 };
 
 test('register', async ({ page }) => {
-  await page.goto('/');
-
-  const signInButton = page.getByTestId('nav-sign-in');
-  const loginLabel = page.locator('h3', { hasText: 'Login' });
-  const registerLink = page.getByTestId('register-link');
-  const registerButton = page.getByTestId('register-submit');
-  const registrationError = page.getByTestId('register-error');
-
-  await expect(signInButton).toBeVisible();
-  await signInButton.click();
-  await expect(loginLabel).toBeVisible();
-  await expect(page).toHaveTitle(
-    'Login - Practice Software Testing - Toolshop - v5.0',
-  );
-  await expect(registerLink).toBeVisible();
-  await registerLink.click();
-
-  for (const [testId, value] of Object.entries(inputData)) {
-    if (testId === 'country') {
-      await page.getByTestId(testId).selectOption({ label: 'Viet Nam' });
-    } else {
-      await page.getByTestId(testId).fill(value);
-    }
-  }
-  await registerButton.click();
-  await page.waitForURL('/auth/login');
-  await expect(registrationError).toHaveCount(0);
+  const registerPage = new RegisterPage(page);
+  await registerPage.goto();
+  await registerPage.fillForm(inputData);
+  await registerPage.submit();
+  await expect(registerPage.registrationError).not.toBeVisible();
 });

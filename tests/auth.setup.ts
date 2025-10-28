@@ -1,10 +1,12 @@
 import { test as setup } from 'playwright/test';
 import { expect } from '@playwright/test';
-import { RegisterRequest } from "./model";
+import { RegisterRequest } from '../src/models';
+import fs from 'fs';
 
 const api = 'https://api.practicesoftwaretesting.com';
 
 const email = `test_${Date.now()}@example.com`;
+const password = '123qwe!@#QWEzmzm';
 
 const payload: RegisterRequest = {
   first_name: 'Sang',
@@ -17,12 +19,13 @@ const payload: RegisterRequest = {
   country: 'VN',
   phone: '094384380',
   email,
-  password: '123qwe!@#QWEzmzm',
+  password,
 };
 
-const authFile = './.auth/auth1.json';
+const authFile = './.auth/auth.json';
+const authInfoFile = './.auth/auth.meta.json';
 
-setup('Create customer 01 auth', async ({ page, request }) => {
+setup('Prepare a customer account cookie', async ({ page, request }) => {
   const response = await request.post(api + '/users/register', {
     data: payload,
   });
@@ -46,4 +49,5 @@ setup('Create customer 01 auth', async ({ page, request }) => {
   );
 
   await page.context().storageState({ path: authFile });
+  fs.writeFileSync(authInfoFile, JSON.stringify({ email, password }));
 });

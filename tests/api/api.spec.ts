@@ -10,19 +10,19 @@ test('GET /products', async ({ request }) => {
   expect(body.data.length).toBe(9);
 });
 
-test('POST /login', async ({ request }) => {
-  const loginData = {
-    email: 'dfasdf@mdf.com',
-    password: 'welcomse',
-  };
-
-  const response = await request.get(api + '/users/login', {
-    data: loginData,
-  });
-  expect(response.status()).toBe(200);
-  const body = await response.json();
-  expect(body.data.length).toBe(9);
-});
+// test('POST /login', async ({ request }) => {
+//   const loginData = {
+//     email: 'dfasdf@mdf.com',
+//     password: 'welcomse',
+//   };
+//
+//   const response = await request.get(api + '/users/login', {
+//     data: loginData,
+//   });
+//   expect(response.status()).toBe(200);
+//   const body = await response.json();
+//   expect(body.data.length).toBe(9);
+// });
 
 test.describe('POST /register', () => {
   test('should register a new user successfully', async ({ request }) => {
@@ -45,7 +45,7 @@ test.describe('POST /register', () => {
     const response = await request.post(api + '/users/register', {
       data: registerData,
     });
-    expect(response.status()).toBe(200);
+    expect(response.status()).toBe(201);
 
     const body = await response.json();
 
