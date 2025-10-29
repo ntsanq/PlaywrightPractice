@@ -22,7 +22,6 @@ export class LoginPage {
   async fillForm(email: string, password: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
-    await this.submitButton.click();
   }
 
   async submit() {

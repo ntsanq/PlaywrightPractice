@@ -1,17 +1,19 @@
 import { expect, test } from '@playwright/test';
-import { LoginPage } from '../src/pages/LoginPage';
+import { LoginPage } from '../src/pages';
+import fs from 'fs';
 
 test.describe('login', () => {
   test('test success login', async ({ page }) => {
-    const loginData = {
-      email: 'dfasdf@mdf.com',
-      password: 'welcomse',
-    };
+    const loginData = JSON.parse(
+      fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
+    );
+
+    const email = loginData?.email;
+    const password = loginData?.password;
 
     const loginPage = new LoginPage(page);
     await loginPage.goto();
-    await loginPage.fillForm(loginData.email, loginData.password);
-    await loginPage.fillForm(loginData.email, loginData.password);
+    await loginPage.fillForm(email, password);
     await expect(loginPage.loginError).not.toBeVisible();
   });
 });

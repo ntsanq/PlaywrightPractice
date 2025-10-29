@@ -81,7 +81,7 @@ test.describe('POST /register', () => {
     const body = await response.json();
     expect(body).toHaveProperty('email');
     expect(body.email[0]).toContain(
-      'A customer with this email address already exists',
+      'A customer with this email address already exists.',
     );
   });
 });
