@@ -33,7 +33,7 @@ test.describe('Homepage with Authentication', () => {
       fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
     );
 
-    await expect(homepage.navMenu.accountNameLink).toContainText(
+    await expect(homepage.navMenu.accountNameLink).toHaveUserName(
       `${userData['first-name']} ${userData['last-name']}`,
     );
   });
