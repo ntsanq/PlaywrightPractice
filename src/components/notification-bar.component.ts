@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export class NotificationBar {
+export class NotificationBarComponent {
   readonly bar: Locator;
   readonly message: Locator;
   readonly testingGuideButton: Locator;

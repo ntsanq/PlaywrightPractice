@@ -1,6 +1,7 @@
 import { Locator, Page } from '@playwright/test';
+import { FilterPanelComponent } from './filter-panel.component';
 
-export class Footer {
+export class FooterComponent {
   readonly root: Locator;
   readonly githubLink: Locator;
   readonly supportLink: Locator;

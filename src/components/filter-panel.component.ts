@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export class FilterPanel {
+export class FilterPanelComponent {
   readonly root: Locator;
 
   readonly sortSelect: Locator;

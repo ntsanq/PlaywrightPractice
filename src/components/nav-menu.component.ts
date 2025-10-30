@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export class NavMenu {
+export class NavMenuComponent {
   readonly root: Locator;
 
   readonly homeLink: Locator;
