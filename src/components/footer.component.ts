@@ -1,5 +1,4 @@
 import { Locator, Page } from '@playwright/test';
-import { FilterPanelComponent } from './filter-panel.component';
 
 export class FooterComponent {
   readonly root: Locator;

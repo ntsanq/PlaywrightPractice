@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { RegisterRequest } from '../models';
+import { RegisterRequest } from '@/models';
 
 export class RegisterPage {
   readonly page: Page;

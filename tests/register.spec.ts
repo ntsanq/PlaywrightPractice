@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { RegisterPage } from '../src/pages';
-import { UserFactory } from '../src/data/user.factory';
+import { RegisterPage } from '@/pages';
+import { UserFactory } from '@/data';
 
 test('register', async ({ page }) => {
   const inputData = UserFactory.generateRegisterPayload();

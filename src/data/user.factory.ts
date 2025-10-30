@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { RegisterRequest } from '../models';
+import { RegisterRequest } from '@/models';
 
 export class UserFactory {
   private static generateStrongPasswordByRegex(length = 12): string {

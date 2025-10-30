@@ -10,7 +10,11 @@
     "types": [
       "@playwright/test",
       "node"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "tests",

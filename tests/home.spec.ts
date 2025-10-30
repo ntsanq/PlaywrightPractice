@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { HomePage } from '../src/pages';
+import { HomePage } from '@/pages';
 import fs from 'fs';
 
 test.describe('Homepage with no Authentication', () => {

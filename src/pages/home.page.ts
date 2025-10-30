@@ -5,7 +5,7 @@ import {
   NavMenuComponent,
   NotificationBarComponent,
   ProductListComponent,
-} from '../components';
+} from '@/components';
 
 export class HomePage {
   readonly page: Page;
