@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { RegisterRequest } from '../models';
 
 export class RegisterPage {
   readonly page: Page;
@@ -21,12 +22,15 @@ export class RegisterPage {
     await this.page.goto('/auth/register');
   }
 
-  async fillForm(inputData: Record<string, string>) {
+  async fillForm(inputData: RegisterRequest) {
     for (const [testId, value] of Object.entries(inputData)) {
       const field = this.page.getByTestId(testId);
 
+      if (testId === 'first_name' || testId === 'last_name') {
+        break;
+      }
       if (testId === 'country') {
-        await field.selectOption({ label: 'Viet Nam' });
+        await field.selectOption({ value: value });
       } else {
         await field.fill(value);
       }

@@ -1,53 +1,38 @@
 import { test as setup } from 'playwright/test';
 import { expect } from '@playwright/test';
-import { RegisterRequest } from '../src/models';
 import fs from 'fs';
+import { UserFactory } from '../src/data/user.factory';
 
 const api = 'https://api.practicesoftwaretesting.com';
-
-const email = `test_${Date.now()}@example.com`;
-const password = '123qwe!@#QWEzmzm';
-
-const payload: RegisterRequest = {
-  first_name: 'Sang',
-  last_name: 'Nguyen',
-  dob: '2000-01-01',
-  street: '123 abc',
-  postal_code: '123123',
-  city: 'HCM',
-  state: 'HCM',
-  country: 'VN',
-  phone: '094384380',
-  email,
-  password,
-};
-
 const authFile = './.auth/auth.json';
 const authInfoFile = './.auth/auth.meta.json';
 
 setup('Prepare a customer account cookie', async ({ page, request }) => {
+  const payload = UserFactory.generateRegisterPayload();
+
   const response = await request.post(api + '/users/register', {
     data: payload,
   });
   const body = await response.json();
   expect(body).toHaveProperty('id');
   expect(body.email).toBe(payload.email);
-  expect(body.first_name).toBe(payload.first_name);
+  expect(body.first_name).toBe(payload['first-name']);
 
   const loginError = page.getByTestId('login-error');
 
   await page.goto('/auth/login');
-  await page.getByTestId('email').fill(email);
+  await page.getByTestId('email').fill(payload.email);
   await page.getByTestId('password').fill(payload.password);
   await page.getByTestId('login-submit').click();
   await expect(loginError).not.toBeVisible();
   const profileMenu = page.getByTestId('nav-menu');
   await page.waitForURL('/account');
   await profileMenu.waitFor({ state: 'visible' });
-  await expect(profileMenu).toContainText(
-    `${payload.first_name} ${payload.last_name}`,
+  const accountName = await profileMenu.innerText();
+  expect(accountName.trim()).toBe(
+    `${payload['first-name']} ${payload['last-name']}`,
   );
 
   await page.context().storageState({ path: authFile });
-  fs.writeFileSync(authInfoFile, JSON.stringify({ email, password }));
+  fs.writeFileSync(authInfoFile, JSON.stringify(payload));
 });

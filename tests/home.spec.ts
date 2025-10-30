@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { HomePage } from '../src/pages';
-
-test.use({ headless: false });
+import fs from 'fs';
 
 test.describe('Homepage with no Authentication', () => {
   test.beforeEach(async ({ page }) => {
@@ -29,6 +28,13 @@ test.describe('Homepage with Authentication', () => {
     await expect(homepage.navMenu.accountNameLink).toBeVisible({
       timeout: 10000,
     });
-    await expect(homepage.navMenu.accountNameLink).toContainText('Sang Nguyen');
+
+    const userData = JSON.parse(
+      fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
+    );
+
+    await expect(homepage.navMenu.accountNameLink).toContainText(
+      `${userData['first-name']} ${userData['last-name']}`,
+    );
   });
 });
