@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices, expect, Locator } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -96,4 +96,19 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+});
+
+expect.extend({
+  async toHaveUserName(received: Locator, expectedName: string) {
+    const text = (await received.textContent())?.trim();
+    const pass = text === expectedName;
+
+    return {
+      pass,
+      message: () =>
+        pass
+          ? `✅ User name matched: ${expectedName}`
+          : `❌ Expected user name "${expectedName}", but got "${text}"`,
+    };
+  },
 });

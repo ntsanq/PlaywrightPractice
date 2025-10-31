@@ -1,7 +1,7 @@
 import { test as setup } from 'playwright/test';
 import { expect } from '@playwright/test';
 import fs from 'fs';
-import { UserFactory } from '@/data';
+import { UserFactory } from '@/datafactory';
 
 const api = 'https://api.practicesoftwaretesting.com';
 const authFile = './.auth/auth.json';

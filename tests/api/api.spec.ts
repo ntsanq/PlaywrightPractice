@@ -1,5 +1,5 @@
 import { APIResponse, expect, test } from '@playwright/test';
-import { UserFactory } from '../../src/data/user.factory';
+import { UserFactory } from '@/datafactory';
 import fs from 'fs';
 
 const api = 'https://api.practicesoftwaretesting.com';
