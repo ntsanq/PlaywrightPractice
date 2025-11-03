@@ -6,11 +6,12 @@ import {
   NotificationBarComponent,
   ProductListComponent,
 } from '@/components';
+import { BasePage } from '@/pages/base.page';
 
-export class HomePage {
-  readonly page: Page;
+export class HomePage extends BasePage {
+  readonly PATH = '/';
+  readonly TITLE = 'Practice Software Testing - Toolshop - v5.0';
 
-  // Component instances
   readonly notificationBar: NotificationBarComponent;
   readonly navMenu: NavMenuComponent;
   readonly filters: FilterPanelComponent;
@@ -18,7 +19,7 @@ export class HomePage {
   readonly footer: FooterComponent;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.notificationBar = new NotificationBarComponent(page);
     this.navMenu = new NavMenuComponent(page);
     this.filters = new FilterPanelComponent(page);
@@ -27,6 +28,6 @@ export class HomePage {
   }
 
   async goto() {
-    await this.page.goto('/');
+    await super.goto();
   }
 }

@@ -13,7 +13,7 @@ test.describe('login', () => {
 
     const loginPage = new LoginPage(page);
     await loginPage.goto();
-    await loginPage.fillForm(email, password);
+    await loginPage.fillForm({ email: email, password: password });
     await expect(loginPage.loginError).not.toBeVisible();
   });
 });

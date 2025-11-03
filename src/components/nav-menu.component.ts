@@ -62,11 +62,14 @@ export class NavMenuComponent {
     await this.myMessagesDropItem.click();
   }
 
-  async isLoggedIn() {
-    return (
-      (await this.accountMenuLink.isVisible()) &&
-      (await this.accountMenuLink.innerText()) !== null
-    );
+  async isLoggedIn(): Promise<boolean> {
+    try {
+      await this.accountMenuLink.waitFor({ state: 'visible', timeout: 5000 });
+      const text = await this.accountMenuLink.innerText();
+      return !!text.trim();
+    } catch {
+      return false;
+    }
   }
 
   async navigateToHome() {
@@ -77,11 +80,11 @@ export class NavMenuComponent {
     await this.contactLink.click();
   }
 
-  async openSignIn() {
+  async navigateToSignIn() {
     await this.signInLink.click();
   }
 
-  async openCategories() {
+  async navigateToCategories() {
     if (!(await this.categoryDropdown.isVisible())) {
       await this.categoriesToggle.click();
     }
@@ -90,7 +93,7 @@ export class NavMenuComponent {
   async selectCategory(
     name: 'Hand Tools' | 'Power Tools' | 'Other' | 'Special Tools' | 'Rentals',
   ) {
-    await this.openCategories();
+    await this.navigateToCategories();
 
     const categoryMap = {
       'Hand Tools': this.handToolsLink,

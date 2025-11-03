@@ -4,9 +4,6 @@ import { MessagesPage } from '@/pages/messages.page';
 import { ContactPage } from '@/pages/contact.page';
 import fs from 'fs';
 import { faker } from '@faker-js/faker';
-import path from 'path';
-
-test.use({ headless: false });
 
 test.describe('messages with authorized', () => {
   test.use({ storageState: '.auth/auth.json' });
@@ -29,8 +26,9 @@ test.describe('messages with authorized', () => {
 
     await test.step('Open home page and verify logged in', async () => {
       await homePage.goto();
-      expect(homePage.navMenu.isLoggedIn()).toBeTruthy();
+      expect(await homePage.navMenu.isLoggedIn()).toBeTruthy();
     });
+
     await test.step('Navigate contact page', async () => {
       await homePage.navMenu.navigateToContact();
       await expect(page).toHaveTitle(contactPage.TITLE);
@@ -96,7 +94,7 @@ test('test messages with unauthorized', async ({ page }) => {
 
   await test.step('Open home page and verify logged in', async () => {
     await homePage.goto();
-    expect(homePage.navMenu.isLoggedIn()).toBeTruthy();
+    expect(await homePage.navMenu.isLoggedIn()).toBeFalsy();
   });
 
   await test.step('Navigate to contact page', async () => {

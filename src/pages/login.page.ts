@@ -1,14 +1,17 @@
 import { Locator, Page } from '@playwright/test';
+import { BasePage } from '@/pages/base.page';
 
-export class LoginPage {
-  readonly page: Page;
+export class LoginPage extends BasePage {
+  readonly PATH = '/auth/login';
+  readonly TITLE = 'Login - Practice Software Testing - Toolshop - v5.0';
+
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly submitButton: Locator;
   readonly loginError: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.emailInput = page.getByTestId('email');
     this.passwordInput = page.getByTestId('password');
     this.submitButton = page.getByTestId('login-submit');
@@ -16,10 +19,10 @@ export class LoginPage {
   }
 
   async goto() {
-    await this.page.goto('/auth/login');
+    await super.goto();
   }
 
-  async fillForm(email: string, password: string) {
+  async fillForm({ email, password }: { email: string; password: string }) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
   }

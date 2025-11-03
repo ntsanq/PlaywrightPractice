@@ -1,8 +1,11 @@
 import { Locator, Page } from '@playwright/test';
 import { RegisterRequest } from '@/models';
+import { BasePage } from '@/pages/base.page';
 
-export class RegisterPage {
-  readonly page: Page;
+export class RegisterPage extends BasePage {
+  readonly PATH = '/auth/register';
+  readonly TITLE = 'Register - Practice Software Testing - Toolshop - v5.0';
+
   readonly signInButton: Locator;
   readonly loginLabel: Locator;
   readonly registerLink: Locator;
@@ -10,7 +13,7 @@ export class RegisterPage {
   readonly registrationError: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.loginLabel = page.locator('h3', { hasText: 'Login' });
     this.signInButton = page.getByTestId('nav-sign-in');
     this.registerLink = page.getByTestId('register-link');
