@@ -25,7 +25,7 @@ test.describe('Homepage with Authentication', () => {
   test('check grid with 9 items', async ({ page }) => {
     const homepage = new HomePage(page);
     await expect(homepage.navMenu.homeLink).toBeVisible();
-    await expect(homepage.navMenu.accountNameLink).toBeVisible({
+    await expect(homepage.navMenu.accountMenuLink).toBeVisible({
       timeout: 10000,
     });
 
@@ -33,7 +33,7 @@ test.describe('Homepage with Authentication', () => {
       fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
     );
 
-    await expect(homepage.navMenu.accountNameLink).toHaveUserName(
+    await expect(homepage.navMenu.accountMenuLink).toHaveUserName(
       `${userData['first-name']} ${userData['last-name']}`,
     );
   });

@@ -4,7 +4,9 @@ export class NavMenuComponent {
   readonly root: Locator;
 
   readonly homeLink: Locator;
-  readonly accountNameLink: Locator;
+  readonly accountMenuLink: Locator;
+  readonly myMessagesDropItem: Locator;
+
   readonly contactLink: Locator;
   readonly signInLink: Locator;
 
@@ -29,7 +31,9 @@ export class NavMenuComponent {
     this.root = page.locator('#navbarSupportedContent');
 
     this.homeLink = this.root.getByTestId('nav-home');
-    this.accountNameLink = this.root.getByTestId('nav-menu');
+    this.accountMenuLink = this.root.getByTestId('nav-menu');
+    this.myMessagesDropItem = this.root.getByTestId('nav-my-messages');
+
     this.contactLink = this.root.getByTestId('nav-contact');
     this.signInLink = this.root.getByTestId('nav-sign-in');
 
@@ -51,6 +55,18 @@ export class NavMenuComponent {
     this.langFR = this.languageDropdown.getByTestId('lang-fr');
     this.langNL = this.languageDropdown.getByTestId('lang-nl');
     this.langTR = this.languageDropdown.getByTestId('lang-tr');
+  }
+
+  async navigateToMyMessages() {
+    await this.accountMenuLink.click();
+    await this.myMessagesDropItem.click();
+  }
+
+  async isLoggedIn() {
+    return (
+      (await this.accountMenuLink.isVisible()) &&
+      (await this.accountMenuLink.innerText()) !== null
+    );
   }
 
   async navigateToHome() {

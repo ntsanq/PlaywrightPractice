@@ -7,7 +7,7 @@ const api = 'https://api.practicesoftwaretesting.com';
 const authFile = './.auth/auth.json';
 const authInfoFile = './.auth/auth.meta.json';
 
-setup('Prepare a customer account cookie', async ({ page, request }) => {
+setup('prepare a customer account cookie', async ({ page, request }) => {
   const payload = UserFactory.generateRegisterPayload();
 
   const response = await request.post(api + '/users/register', {
