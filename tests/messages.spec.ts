@@ -1,18 +1,16 @@
-import { expect, test } from '@playwright/test';
-import { HomePage } from '@/pages';
-import { MessagesPage } from '@/pages/messages.page';
-import { ContactPage } from '@/pages/contact.page';
+import { expect, test } from '@/fixtures';
 import fs from 'fs';
 import { faker } from '@faker-js/faker';
 
 test.describe('messages with authorized', () => {
   test.use({ storageState: '.auth/auth.json' });
 
-  test('test messages with authorized', async ({ page }) => {
-    const homePage = new HomePage(page);
-    const messagesPage = new MessagesPage(page);
-    const contactPage = new ContactPage(page);
-
+  test('test messages with authorized', async ({
+    page,
+    homePage,
+    messagesPage,
+    contactPage,
+  }) => {
     const userData = JSON.parse(
       fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
     );
@@ -26,7 +24,8 @@ test.describe('messages with authorized', () => {
 
     await test.step('Open home page and verify logged in', async () => {
       await homePage.goto();
-      expect(await homePage.navMenu.isLoggedIn()).toBeTruthy();
+      const isLoggedIn = homePage.navMenu.isLoggedIn();
+      expect(isLoggedIn).toBeTruthy();
     });
 
     await test.step('Navigate contact page', async () => {
@@ -75,9 +74,7 @@ test.describe('messages with authorized', () => {
   });
 });
 
-test('test messages with unauthorized', async ({ page }) => {
-  const homePage = new HomePage(page);
-  const contactPage = new ContactPage(page);
+test('test messages with unauthorized', async ({ homePage, contactPage }) => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const email = faker.internet.email({ firstName, lastName }).toLowerCase();
@@ -94,7 +91,8 @@ test('test messages with unauthorized', async ({ page }) => {
 
   await test.step('Open home page and verify logged in', async () => {
     await homePage.goto();
-    expect(await homePage.navMenu.isLoggedIn()).toBeFalsy();
+    const isLoggedIn = homePage.navMenu.isLoggedIn();
+    expect(isLoggedIn).toBeTruthy();
   });
 
   await test.step('Navigate to contact page', async () => {

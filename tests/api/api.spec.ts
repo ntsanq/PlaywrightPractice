@@ -1,4 +1,5 @@
-import { APIResponse, expect, test } from '@playwright/test';
+import { expect, test } from '@/fixtures';
+import { APIResponse } from '@playwright/test';
 import { UserFactory } from '@/datafactory';
 import fs from 'fs';
 
@@ -30,23 +31,23 @@ test('POST /login', async ({ request }) => {
 
 test.describe('POST /register', () => {
   test('should register a new user successfully', async ({ request }) => {
-    const registerData = UserFactory.generateRegisterPayload();
+    const registerPayloadData = UserFactory.generateRegisterPayload();
 
     const response = await request.post(api + '/users/register', {
-      data: registerData,
+      data: registerPayloadData,
     });
     expect(response.status()).toBe(201);
 
     const body = await response.json();
 
     expect(body).toHaveProperty('id');
-    expect(body.email).toBe(registerData.email);
-    expect(body.first_name).toBe(registerData['first-name']);
+    expect(body.email).toBe(registerPayloadData.email);
+    expect(body.first_name).toBe(registerPayloadData['first-name']);
   });
 
   test('should fail when email already exists', async ({ request }) => {
-    const payload = UserFactory.generateRegisterPayload();
-    payload.email = 'sang@gmail.com';
+    const registerPayloadData = UserFactory.generateRegisterPayload();
+    registerPayloadData.email = 'sang@gmail.com';
 
     const assertEmailExistsError = async (response: APIResponse) => {
       const body = await response.json();
@@ -58,11 +59,11 @@ test.describe('POST /register', () => {
     };
 
     const firstResponse = await request.post(api + '/users/register', {
-      data: payload,
+      data: registerPayloadData,
     });
     if (firstResponse.status() === 201) {
       const secondResponse = await request.post(api + '/users/register', {
-        data: payload,
+        data: registerPayloadData,
       });
       await assertEmailExistsError(secondResponse);
     } else {
