@@ -12,6 +12,7 @@ export class ProductListComponent {
   }
 
   async count(): Promise<number> {
+    await this.waitForFullyLoaded();
     return await this.products.count();
   }
 
@@ -21,12 +22,17 @@ export class ProductListComponent {
     });
   }
 
+  getAllProducts(): Locator {
+    return this.products;
+  }
+
   async getAllNames(): Promise<string[]> {
     await this.waitForFullyLoaded();
     return await this.page.getByTestId('product-name').allInnerTexts();
   }
 
   async getAllPrices(): Promise<string[]> {
+    await this.waitForFullyLoaded();
     return await this.page.getByTestId('product-price').allInnerTexts();
   }
 
@@ -51,6 +57,7 @@ export class ProductListComponent {
   }
 
   async getCo2Rating(name: string): Promise<string> {
+    await this.waitForFullyLoaded();
     const product = this.getProductByName(name);
     const activeRating = product.locator(
       '[data-test="co2-rating-badge"] .co2-letter.active',
@@ -65,6 +72,12 @@ export class ProductListComponent {
   }
 
   async waitForFullyLoaded() {
-    await this.loadingSkeletons.first().waitFor({ state: 'hidden' });
+    await this.loadingSkeletons
+      .first()
+      .waitFor({ state: 'detached', timeout: 10_000 })
+      .catch(() => {
+        // Ignore error if skeletons never appeared
+      });
+    await this.products.first().waitFor({ state: 'visible', timeout: 10_000 });
   }
 }

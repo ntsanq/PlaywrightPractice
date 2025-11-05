@@ -1,5 +1,4 @@
 import { expect, test } from '@/fixtures';
-import fs from 'fs';
 import { faker } from '@faker-js/faker';
 
 test.describe('messages with authorized', () => {
@@ -82,7 +81,7 @@ test('test messages with unauthorized', async ({ homePage, contactPage }) => {
     last_name: lastName,
     email: email,
     subject: 'Return',
-    message: faker.lorem.paragraph({ min: 2, max: 4 }),
+    message: faker.lorem.paragraph({ min: 3, max: 4 }),
     attachmentPath: attachment,
   };
 
