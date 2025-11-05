@@ -1,10 +1,6 @@
-import { test as baseTest, expect } from '@playwright/test';
-import { pageFixtures, PageFixtures } from './pages.fixture';
+import { mergeTests, expect } from '@playwright/test';
+import { pageFixtures } from './pages.fixture';
+import { userFixtures } from '@/fixtures/user.fixture';
 
-export type Fixtures = PageFixtures;
-
-export const test = baseTest.extend<Fixtures>({
-  ...pageFixtures,
-});
-
+export const test = mergeTests(pageFixtures, userFixtures);
 export { expect };

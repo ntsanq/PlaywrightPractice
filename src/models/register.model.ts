@@ -1,4 +1,4 @@
-export interface RegisterRequest {
+export interface RegisterModel {
   'first-name': string;
   first_name: string;
   'last-name': string;

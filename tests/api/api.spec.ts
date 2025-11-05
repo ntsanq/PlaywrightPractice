@@ -13,15 +13,11 @@ test('GET /products', async ({ request }) => {
   expect(body.data.length).toBe(9);
 });
 
-test('POST /login', async ({ request }) => {
-  const loginData = JSON.parse(
-    fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
-  );
-
+test('POST /login', async ({ request, loggedUser }) => {
   const response = await request.post(api + '/users/login', {
     data: {
-      email: loginData.email,
-      password: loginData.password,
+      email: loggedUser.email,
+      password: loggedUser.password,
     },
   });
   expect(response.status()).toBe(200);

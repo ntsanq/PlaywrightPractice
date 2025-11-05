@@ -1,32 +1,59 @@
 import { expect, test } from '@/fixtures';
-import fs from 'fs';
+
+const AUTH_FILE = '.auth/auth.json';
+const PRODUCTS_API = 'https://api.practicesoftwaretesting.com/products**';
+const EXPECTED_PRODUCT_COUNT = 9;
 
 test.describe('Homepage with no Authentication', () => {
   test('check grid with 9 items with no authentication', async ({
-    page,
     homePage,
   }) => {
     await homePage.goto();
-    const productCart = page.locator('.col-md-9').getByRole('link');
-    await expect(productCart).toHaveCount(9);
+
+    const productCart = await homePage.productList.getAllNames();
+    expect(productCart.length).toBe(EXPECTED_PRODUCT_COUNT);
   });
 });
 
 test.describe('Homepage with Authentication', () => {
-  test.use({ storageState: '.auth/auth.json' });
+  test.use({ storageState: AUTH_FILE });
 
-  test('check grid with 9 items', async ({ homePage }) => {
+  test('check grid with 9 items', async ({ homePage, loggedUser }) => {
     await homePage.goto();
     await expect(homePage.navMenu.homeLink).toBeVisible();
-    const isLoggedIn = homePage.navMenu.isLoggedIn();
+    const isLoggedIn = await homePage.navMenu.isLoggedIn();
     expect(isLoggedIn).toBeTruthy();
 
-    const userData = JSON.parse(
-      fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
-    );
-
     await expect(homePage.navMenu.accountMenuLink).toHaveUserName(
-      `${userData['first-name']} ${userData['last-name']}`,
+      `${loggedUser['first-name']} ${loggedUser['last-name']}`,
     );
+  });
+});
+
+test.describe('Homepage test with HTTP request', async () => {
+  test('Validate product data is visible in UI from API', async ({
+    page,
+    homePage,
+  }) => {
+    let productsFromApi: any = null;
+
+    await test.step('intercept /products', async () => {
+      await page.route(PRODUCTS_API, async (route) => {
+        const response = await route.fetch();
+        if (response.headers()['content-type']?.includes('application/json')) {
+          productsFromApi = await response.json();
+        }
+        await route.fulfill({ response });
+      });
+    });
+
+    await homePage.goto();
+
+    const productsList = await homePage.productList.getAllNames();
+
+    expect(productsFromApi).not.toBeNull();
+    for (const product of productsFromApi.data) {
+      expect(productsList).toContain(product.name);
+    }
   });
 });

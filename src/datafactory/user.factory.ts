@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { RegisterRequest } from '@/models';
+import { RegisterModel } from '@/models';
 
 export class UserFactory {
   private static generateStrongPasswordByRegex(length = 12): string {
@@ -18,7 +18,7 @@ export class UserFactory {
     return password;
   }
 
-  static generateRegisterPayload(): RegisterRequest {
+  static generateRegisterPayload(): RegisterModel {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const email = faker.internet.email({ firstName, lastName }).toLowerCase();

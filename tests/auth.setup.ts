@@ -38,12 +38,14 @@ setup(
 
     await setup.step('Verify logged in', async () => {
       await expect(page).toHaveTitle(accountPage.TITLE);
-      const isLoggedIn = homePage.navMenu.isLoggedIn();
+      const isLoggedIn = await homePage.navMenu.isLoggedIn();
       expect(isLoggedIn).toBeTruthy();
     });
 
     await setup.step('Write the cookie to .auth/auth.json', async () => {
-      await page.context().storageState({ path: authFile });
+      await page.context().storageState({
+        path: authFile,
+      });
       fs.writeFileSync(authInfoFile, JSON.stringify(registerPayloadData));
     });
   },

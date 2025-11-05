@@ -3,10 +3,12 @@ import { Page, Locator, expect } from '@playwright/test';
 export class ProductListComponent {
   readonly page: Page;
   readonly products: Locator;
+  readonly loadingSkeletons: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.products = page.locator('a[data-test^="product-"]');
+    this.loadingSkeletons = page.locator('.skeleton');
   }
 
   async count(): Promise<number> {
@@ -20,6 +22,7 @@ export class ProductListComponent {
   }
 
   async getAllNames(): Promise<string[]> {
+    await this.waitForFullyLoaded();
     return await this.page.getByTestId('product-name').allInnerTexts();
   }
 
@@ -59,5 +62,9 @@ export class ProductListComponent {
     const product = this.getProductByName(name);
     const outOfStock = product.getByTestId('out-of-stock');
     return await outOfStock.isVisible();
+  }
+
+  async waitForFullyLoaded() {
+    await this.loadingSkeletons.first().waitFor({ state: 'hidden' });
   }
 }

@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { RegisterRequest } from '@/models';
+import { RegisterModel } from '@/models';
 import { BasePage } from '@/pages/base.page';
 
 export class RegisterPage extends BasePage {
@@ -25,7 +25,7 @@ export class RegisterPage extends BasePage {
     await this.page.goto('/auth/register');
   }
 
-  async fillForm(inputData: RegisterRequest) {
+  async fillForm(inputData: RegisterModel) {
     for (const [testId, value] of Object.entries(inputData)) {
       const field = this.page.getByTestId(testId);
 

@@ -10,11 +10,8 @@ test.describe('messages with authorized', () => {
     homePage,
     messagesPage,
     contactPage,
+    loggedUser,
   }) => {
-    const userData = JSON.parse(
-      fs.readFileSync('.auth/auth.meta.json', 'utf-8'),
-    );
-
     const input = {
       subject: 'Return',
       message:
@@ -24,7 +21,7 @@ test.describe('messages with authorized', () => {
 
     await test.step('Open home page and verify logged in', async () => {
       await homePage.goto();
-      const isLoggedIn = homePage.navMenu.isLoggedIn();
+      const isLoggedIn = await homePage.navMenu.isLoggedIn();
       expect(isLoggedIn).toBeTruthy();
     });
 
@@ -35,7 +32,7 @@ test.describe('messages with authorized', () => {
 
     await test.step('Submit a message', async () => {
       await expect(contactPage.greetingMessage).toContainText(
-        `Hello ${userData.first_name} ${userData.last_name}`,
+        `Hello ${loggedUser.first_name} ${loggedUser.last_name}`,
         {
           timeout: 10000,
         },
@@ -89,10 +86,10 @@ test('test messages with unauthorized', async ({ homePage, contactPage }) => {
     attachmentPath: attachment,
   };
 
-  await test.step('Open home page and verify logged in', async () => {
+  await test.step('Open home page and verify not authorized', async () => {
     await homePage.goto();
-    const isLoggedIn = homePage.navMenu.isLoggedIn();
-    expect(isLoggedIn).toBeTruthy();
+    const isLoggedIn = await homePage.navMenu.isLoggedIn();
+    expect(isLoggedIn).toBeFalsy();
   });
 
   await test.step('Navigate to contact page', async () => {

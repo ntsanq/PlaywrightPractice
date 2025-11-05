@@ -64,7 +64,7 @@ export class NavMenuComponent {
 
   async isLoggedIn(): Promise<boolean> {
     try {
-      await this.accountMenuLink.waitFor({ state: 'visible', timeout: 5000 });
+      await this.accountMenuLink.waitFor({ state: 'visible', timeout: 10000 });
       const text = await this.accountMenuLink.innerText();
       return !!text.trim();
     } catch {
