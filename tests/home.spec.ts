@@ -29,7 +29,7 @@ test.describe('Homepage with Authentication', () => {
   });
 });
 
-test.describe('Homepage test with HTTP request', async () => {
+test.describe('Homepage test with HTTP request', () => {
   test('Validate product data is visible in UI from API', async ({
     page,
     homePage,
@@ -122,5 +122,23 @@ test.describe('Homepage test with HTTP request', async () => {
       const find = homePage.productList.getProductByName('Happy birthday');
       await expect(find).toContainText('111.15');
     });
+  });
+});
+
+test.describe('Homepage test injecting Javascript', () => {
+  test('test there is no broken image', async ({ page, homePage }) => {
+    await homePage.goto();
+    const brokenImages = await page.evaluate(() => {
+      return Array.from(document.querySelectorAll('img'))
+        .filter((img) => img.naturalWidth === 0 || img.naturalHeight === 0)
+        .map((img) => {
+          return img.src;
+        });
+    });
+
+    expect(
+      brokenImages.length,
+      `Broken images: ${brokenImages.toString()}`,
+    ).toBe(0);
   });
 });
