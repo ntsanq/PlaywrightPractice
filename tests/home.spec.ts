@@ -3,8 +3,8 @@ import { expect, test } from '@/fixtures';
 const AUTH_FILE = '.auth/auth.json';
 const PRODUCTS_API = 'https://api.practicesoftwaretesting.com/products**';
 
-test.describe('Homepage with no Authentication', () => {
-  test('check grids to have items with no authentication', async ({
+test.describe('Home page test with NO authorized', () => {
+  test('test products list to have items with no authorized', async ({
     homePage,
   }) => {
     await homePage.goto();
@@ -14,14 +14,18 @@ test.describe('Homepage with no Authentication', () => {
   });
 });
 
-test.describe('Homepage with Authentication', () => {
+test.describe('Home page test with authorized', () => {
   test.use({ storageState: AUTH_FILE });
 
-  test('check grid with 9 items', async ({ homePage, loggedUser }) => {
+  test('test products list to have items', async ({ homePage, loggedUser }) => {
     await homePage.goto();
     await expect(homePage.navMenu.homeLink).toBeVisible();
     const isLoggedIn = await homePage.navMenu.isLoggedIn();
     expect(isLoggedIn).toBeTruthy();
+
+    await homePage.productList.waitForFullyLoaded();
+    const count = await homePage.productList.count();
+    expect(count).toBeGreaterThan(0);
 
     await expect(homePage.navMenu.accountMenuLink).toHaveUserName(
       `${loggedUser['first-name']} ${loggedUser['last-name']}`,
@@ -29,8 +33,8 @@ test.describe('Homepage with Authentication', () => {
   });
 });
 
-test.describe('Homepage test with HTTP request', () => {
-  test('Validate product data is visible in UI from API', async ({
+test.describe('Home page test with HTTP request', () => {
+  test('test verifying product data to be matched in UI from API', async ({
     page,
     homePage,
   }) => {
@@ -59,7 +63,7 @@ test.describe('Homepage test with HTTP request', () => {
     });
   });
 
-  test('validate product data is visible from modified API', async ({
+  test('test verifying product data to be matched from modified API', async ({
     page,
     homePage,
   }) => {
@@ -100,7 +104,7 @@ test.describe('Homepage test with HTTP request', () => {
     });
   });
 
-  test('verify first product to be loaded from hard file', async ({
+  test('test verifying first product to be loaded from hard file', async ({
     page,
     homePage,
   }) => {
@@ -125,8 +129,11 @@ test.describe('Homepage test with HTTP request', () => {
   });
 });
 
-test.describe('Homepage test injecting Javascript', () => {
-  test('test there is no broken image', async ({ page, homePage }) => {
+test.describe('Home page test with injecting Javascript', () => {
+  test('test verifying if there is any broken image', async ({
+    page,
+    homePage,
+  }) => {
     await homePage.goto();
     const brokenImages = await page.evaluate(() => {
       return Array.from(document.querySelectorAll('img'))

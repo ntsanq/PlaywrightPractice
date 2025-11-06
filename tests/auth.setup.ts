@@ -7,7 +7,7 @@ const authFile = './.auth/auth.json';
 const authInfoFile = './.auth/auth.meta.json';
 
 setup(
-  'Prepare a customer account cookie',
+  'Setup a new customer account',
   async ({ page, homePage, loginPage, accountPage, request }) => {
     const registerPayloadData = UserFactory.generateRegisterPayload();
     const response = await request.post(api + '/users/register', {
@@ -16,7 +16,7 @@ setup(
     const body = await response.json();
 
     await setup.step(
-      'Verify register response success with relevant data',
+      'verify register response success with relevant data',
       () => {
         expect(body).toHaveProperty('id');
         expect(body.email).toBe(registerPayloadData.email);
@@ -24,7 +24,7 @@ setup(
       },
     );
 
-    await setup.step('Login on the browser and verify no error', async () => {
+    await setup.step('login on the browser and verify no error', async () => {
       await homePage.goto();
       const loginError = loginPage.loginError;
       await homePage.navMenu.navigateToSignIn();
@@ -36,13 +36,13 @@ setup(
       await expect(loginError).not.toBeVisible();
     });
 
-    await setup.step('Verify logged in', async () => {
+    await setup.step('verify logged in', async () => {
       await expect(page).toHaveTitle(accountPage.TITLE);
       const isLoggedIn = await homePage.navMenu.isLoggedIn();
       expect(isLoggedIn).toBeTruthy();
     });
 
-    await setup.step('Write the cookie to .auth/auth.json', async () => {
+    await setup.step('write the cookie to .auth/auth.json', async () => {
       await page.context().storageState({
         path: authFile,
       });

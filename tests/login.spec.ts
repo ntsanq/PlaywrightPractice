@@ -1,8 +1,10 @@
 import { test, expect } from '@/fixtures';
-import fs from 'fs';
 
-test.describe('login', () => {
-  test('test success login', async ({ loginPage, loggedUser }) => {
+test.describe('Login page test', () => {
+  test('test success login with correct info', async ({
+    loginPage,
+    loggedUser,
+  }) => {
     const email = loggedUser?.email;
     const password = loggedUser?.password;
 
